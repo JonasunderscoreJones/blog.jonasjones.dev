@@ -1,9 +1,9 @@
 import Home from './routes/Home.svelte';
-import Lorem from './routes/Lorem.svelte';
+import Post from './routes/Post.svelte';
 import NotFound from './routes/NotFound.svelte';
 
 export default {
     '/': Home,
-    '/lorem/:repeat': Lorem,
+    '/post/:year/:month/:day/:title': Post,
     '*': NotFound
 };

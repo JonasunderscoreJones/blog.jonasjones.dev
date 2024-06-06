@@ -1,15 +1,18 @@
 <script lang="ts">
-    export let params: {repeat?: string} = {};
+    export let params: {year?: string, month?: string, day?: string, title?: string} = {};
 
-    let repeat = 1;
-    $: {
-        repeat = 1
-        if (params?.repeat) {
-            repeat = parseInt(params.repeat, 10)
-            if (repeat < 1) {
-                repeat = 1
-            }
+    if (params.year && params.month && params.day && params.title) {
+        const date = new Date(`${params.year}-${params.month}-${params.day}`);
+        if (isNaN(date.getTime())) {
+            // the date is invalid
+            // navigate to the 404 page
+            // this is the same as returning { status: 404 } from load()
+            location.href = '/404';
         }
+    } else {
+        // the URL is missing some parameters
+        // navigate to the 404 page
+        location.href = '/#/404';
     }
 </script>
 
