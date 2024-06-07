@@ -21,14 +21,22 @@
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     });
+
+	let searchValue = '';
+
+	function handleSearch(event) {
+		// Update the searchValue with the value received from the child component
+		searchValue = event.detail;
+	}
 </script>
 
 <Title visible={showTitle} />
-<Navbar />
+<Navbar on:search={handleSearch} />
 
 <main>
 	<div class="content">
 		<Router {routes} />
+		<p>Search Value: {searchValue}</p>
 	</div>
 </main>
 

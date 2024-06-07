@@ -1,8 +1,23 @@
+<script>
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
+    let searchTerm = '';
+
+    function handleSearch() {
+      // Dispatch an event with the search term as payload
+      dispatch('search', searchTerm);
+    }
+  </script>
+
 <nav class="navbar">
     <ul>
         <li><a href="/#/">Home</a></li>
         <li><a href="https://jonasjones.dev/about">About</a></li>
         <li><a href="#contact">Contact</a></li>
+        <input type="text" bind:value={searchTerm} />
+        <button on:click={handleSearch}>Search</button>
         <a href="https://jonasjones.dev" class="sticky-link">Homepage</a>
     </ul>
 </nav>
