@@ -3,6 +3,8 @@
 	import routes from './routes';
     import Title from './components/Title.svelte';
     import Navbar from './components/Navbar.svelte';
+	import Footer from './components/Footer.svelte';
+
 	import { onMount } from 'svelte';
 
 	let showTitle = true;
@@ -29,6 +31,10 @@
 		<Router {routes} />
 	</div>
 </main>
+
+<footer>
+	<Footer />
+</footer>
 
 <style>
 
