@@ -25,7 +25,6 @@
 	let searchValue = '';
 
 	function handleSearch(event) {
-		// Update the searchValue with the value received from the child component
 		searchValue = event.detail;
 	}
 </script>

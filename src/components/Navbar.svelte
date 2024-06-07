@@ -13,13 +13,14 @@
 
 <nav class="navbar">
     <ul>
-        <li><a href="/#/">Home</a></li>
+        <li><a href="/#/">Posts</a></li>
         <li><a href="https://jonasjones.dev/about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <input type="text" bind:value={searchTerm} />
-        <button on:click={handleSearch}>Search</button>
-        <a href="https://jonasjones.dev" class="sticky-link">Homepage</a>
+        <li id="navbarsearchparent"><input id="overflownavbar" class="navbarsearch" type="text" bind:value={searchTerm} on:input={handleSearch} placeholder="Search posts..." /></li>
+        <li><a href="https://jonasjones.dev">Homepage</a></li>
     </ul>
+    <div id="overflownavbarsub">
+        <input id="overflownacbarsubitem" class="navbarsearch" type="text" bind:value={searchTerm} on:input={handleSearch} placeholder="Search posts..." />
+    </div>
 </nav>
 
 <style>
@@ -42,7 +43,7 @@
         gap: 20px;
         justify-content: center;
         align-items: center;
-        width: 100%; /* Ensures ul takes full width */
+        width: 100%;
     }
 
     li {
@@ -60,28 +61,43 @@
         color: #d1d0c5;
     }
 
-    .sticky-link {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 10px 20px;
-        text-decoration: none;
+    #overflownavbarsub {
+        display: none;
+        gap: 20px;
+        justify-content: center;
     }
 
-    @media (max-width: 650px) {
+    .navbarsearch {
+        height: 25px;
+        padding: 5px;
+        margin-bottom: 5px;
+        background-color: #303030;
+        border-color: #e2b714;
+        border-radius: 5px;
+        border-width: 0px;
+        color: #e2b714;
+    }
+
+    @media (max-width: 550px) {
+        #overflownavbar {
+            display: none;
+        }
+
+        #overflownavbarsub {
+            display: flex;
+        }
+
         .navbar {
             flex-direction: column;
         }
 
-        .sticky-link {
-            position: relative;
-            padding: 10px 20px;
+        .navbarsearch {
+            width: 90%;
         }
-    }
 
-    @media (max-width: 500px) {
-        .sticky-link {
-            display: none;
+        #navbarsearchparent {
+            width: 90%;
+            border-color: red;
         }
     }
 </style>
