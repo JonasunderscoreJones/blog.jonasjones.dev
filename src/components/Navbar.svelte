@@ -70,6 +70,7 @@
     .navbarsearch {
         height: 25px;
         padding: 5px;
+        padding-left: 10px;
         margin-bottom: 5px;
         background-color: #303030;
         border-color: #e2b714;
