@@ -128,7 +128,7 @@ function copyLink() {
 <div class="post">
   <p class="postHead">by</p>
   <h3 class="postHead">{postAuthor}</h3>
-  <p class="postHead">{postDate}</p>
+  <p class="postHead postDate">{postDate}</p>
   <div class="copy-link" on:click={copyLink}>
     <i class="fas fa-link"></i>
     <span>{clickText}</span>
@@ -157,9 +157,14 @@ function copyLink() {
     margin-bottom: 0;
   }
 
+  p.postDate {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3em;
+  }
+
   p.postHead, h3.postHead {
     display: inline-block;
-    padding: 0 10px;
+    padding: 0 5px;
     color: gray;
   }
 
