@@ -1,7 +1,8 @@
 import Home from './routes/Home.svelte';
 import Loading from './routes/Loading.svelte';
 import NotFound from './routes/NotFound.svelte';
-import wrap from 'svelte-spa-router/wrap'
+import wrap from 'svelte-spa-router/wrap';
+import Dashboard from './routes/Dashboard.svelte';
 
 export default {
     '/': Home,
@@ -15,5 +16,6 @@ export default {
             message: 'Loading the Name route…'
         }
     }),
+    '/dash': Dashboard,
     '*': NotFound
 };
