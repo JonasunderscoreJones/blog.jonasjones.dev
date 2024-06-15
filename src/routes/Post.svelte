@@ -11,11 +11,14 @@
     let post: {id: String, date: String, title: String, author: String, description: String} = {};
 
     let postTitle = "";
-    let postDescription = "";
+    let postAuthor = "";
+    let postDate = "";
 
     let loading = true;
     let error404 = false;
     let thisHref = location.href;
+
+    let clickText = "Copy Link";
 
     if (params.year && params.month && params.day && params.title) {
         const searchdate = new Date(`${params.year}-${params.month}-${params.day}`);
@@ -53,7 +56,8 @@
         document.getElementById('markdowncontent').innerHTML = await markdowncontent;
         loading = false;
         postTitle = post.title;
-        postDescription = post.description;
+        postAuthor = post.author;
+        postDate = post.date;
       } else {
         loading = false
         error404 = true
@@ -101,6 +105,17 @@
     });
 }
 
+function copyLink() {
+    navigator.clipboard.writeText(location.href).then(() => {
+        clickText = "Copied!";
+        setTimeout(() => {
+            clickText = "Copy Link";
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+  }
+
 </script>
 {#if loading}
 <Loading />
@@ -111,18 +126,52 @@
 {/if}
 
 <div class="post">
-    <h1>{postTitle}</h1>
-    <h3>{postDescription}</h3>
-    <div id="markdowncontent"></div>
+  <p class="postHead">by</p>
+  <h3 class="postHead">{postAuthor}</h3>
+  <p class="postHead">{postDate}</p>
+  <div class="copy-link" on:click={copyLink}>
+    <i class="fas fa-link"></i>
+    <span>{clickText}</span>
+</div>
+  <h1 class="postHead">{postTitle}</h1>
+  <div id="markdowncontent"></div>
 </div>
 
 
 <style>
-	h1 {
-		color: #008cff;
+	h1.postHead {
 		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
+    font-family: 'Libre Barcode 128', sans-serif;
+    font-size: 5em;
+    margin-top: 0;
 	}
+
+  h3.postHead {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.7em;
+    margin-bottom: 0;
+  }
+  p.postHead {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 0;
+  }
+
+  p.postHead, h3.postHead {
+    display: inline-block;
+    padding: 0 10px;
+    color: gray;
+  }
+
+  .copy-link {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .copy-link span {
+            margin-left: 8px;
+            font-size: 16px;
+        }
 </style>
 
