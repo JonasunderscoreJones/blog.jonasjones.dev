@@ -35,7 +35,6 @@
 <main>
 	<div class="content">
 		<Router {routes} />
-		<p>Search Value: {searchValue}</p>
 	</div>
 </main>
 
@@ -48,6 +47,7 @@
 	@media (min-width: 640px) {
 		main {
 			max-width: none;
+			padding-bottom: 20px;
 		}
 	}
 </style>
