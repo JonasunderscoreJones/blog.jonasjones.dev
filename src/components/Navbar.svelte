@@ -71,7 +71,7 @@
         height: 25px;
         padding: 5px;
         padding-left: 10px;
-        margin-bottom: 5px;
+        margin-bottom: 2px;
         background-color: #303030;
         border-color: #e2b714;
         border-radius: 5px;
