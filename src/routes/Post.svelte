@@ -5,10 +5,21 @@
     import NotFound from "./NotFound.svelte";
     import navigate from 'svelte-spa-router';
 
-    export let params: {year?: string, month?: string, day?: string, title?: string} = {};
+    export let params: {year: string, month: string, day: string, title: string} = {
+         year: "",
+         month: "",
+         day: "",
+         title: ""
+     };
 
     let posts: { id: any; }[] = [];
-    let post: {id: String, date: String, title: String, author: String, description: String} = {};
+    let post: {id: string, date: string, title: string, author: string, description: string} = {
+        id: '',
+        date: '',
+        title: '',
+        author: '',
+        description: ''
+    };
 
     let postTitle = "";
     let postAuthor = "";
@@ -53,7 +64,10 @@
       if (await content.ok) {
         let markdowncontent = await content.text();
         markdowncontent = await marked.parse(removePostVars(markdowncontent));
-        document.getElementById('markdowncontent').innerHTML = await markdowncontent;
+        const markdowncontentElement = document.getElementById('markdowncontent');
+        if (markdowncontentElement) {
+            markdowncontentElement.innerHTML = await markdowncontent;
+        }
         loading = false;
         postTitle = post.title;
         postAuthor = post.author;
@@ -129,6 +143,8 @@ function copyLink() {
   <p class="postHead">by</p>
   <h3 class="postHead">{postAuthor}</h3>
   <p class="postHead postDate">{postDate}</p>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="copy-link" on:click={copyLink}>
     <i class="fas fa-link"></i>
     <span>{clickText}</span>

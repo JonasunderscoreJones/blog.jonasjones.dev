@@ -24,6 +24,9 @@
 
 	let searchValue = '';
 
+	/**
+     * @param {{ detail: string; }} event
+     */
 	function handleSearch(event) {
 		searchValue = event.detail;
 	}
