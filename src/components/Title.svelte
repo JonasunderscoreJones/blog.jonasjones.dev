@@ -13,6 +13,7 @@
         opacity: 1;
         font-family: 'Tiny5';
         color: #e2b714;
+        background-color: black;
     }
 
     #titleh1 {
