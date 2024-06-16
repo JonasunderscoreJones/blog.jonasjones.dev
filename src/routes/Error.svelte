@@ -1,6 +1,10 @@
+<script lang="ts">
+	export let errorCode: {status: number, message: string} = {status: 404, message: "Not Found"};
+</script>
+
 <div id="error">
-	<h1 id="code">404</h1>
-	<h1 id="msg">Not Found</h1>
+	<h1 id="code">{errorCode.status}</h1>
+	<h1 id="msg">{errorCode.message}</h1>
 	<p>This post doesn't exist or has been deleted.</p>
 </div>
 

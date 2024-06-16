@@ -1,5 +1,5 @@
 import Home from './routes/Home.svelte';
-import NotFound from './routes/NotFound.svelte';
+import NotFound from './routes/Error.svelte';
 import Dashboard from './routes/Dashboard.svelte';
 import Post from './routes/Post.svelte';
 
