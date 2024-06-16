@@ -12,22 +12,31 @@
     let error = false;
     let loading = true;
 
+    let noPostMessage = '';
+
     onMount(async () => {
         try {
             const response = await fetch('https://cdn.jonasjones.dev/blog/index.json');
 
             posts = await response.json();
 
-            // for each post, conver the date string to a Date object
-            posts.forEach(post => {
-                post.date = new Date(post.date);
-            });
+            if (posts.length === 0) {
+                loading = false;
+                noPostMessage = 'No posts found :/';
+                return;
+            } else {
 
-            filteredPosts = posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
+                // for each post, conver the date string to a Date object
+                posts.forEach(post => {
+                    post.date = new Date(post.date);
+                });
 
-            // sort the posts by date
-            filteredPosts.sort((a, b) => b.date - a.date);
-            loading = false;
+                filteredPosts = posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
+
+                // sort the posts by date
+                filteredPosts.sort((a, b) => b.date - a.date);
+                loading = false;
+            }
         } catch (error) {
             console.error(error);
             error = true;
@@ -42,6 +51,7 @@
     {#if error}
         <NotFound />
     {:else}
+    <h2 style="text-align: center;">{noPostMessage}</h2>
         <div class="postList">
             {#each filteredPosts as post}
                 <div class="postDiv">
