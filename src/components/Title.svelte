@@ -25,11 +25,6 @@
         margin: 0 auto;
         font-size: 5vw
     }
-
-    .hidden {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
 </style>
 <main>
     <div class="title-parent">
