@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { marked } from 'marked';
-    import Loading from './Loading.svelte';
-    import NotFound from "./NotFound.svelte";
+    import Loading from '../components/Loading.svelte';
+    import NotFound from "./Error.svelte";
     import navigate from 'svelte-spa-router';
 
     export let params: {year: string, month: string, day: string, title: string} = {
@@ -94,6 +94,7 @@
     while (true) {
         if (thisHref != location.href) {
           location.reload()
+          console.log("reloading")
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
@@ -133,10 +134,10 @@ function copyLink() {
 </script>
 {#if loading}
 <Loading />
-{/if}
-
-{#if error404}
-<NotFound />
+{:else}
+  {#if error404}
+  <NotFound />
+  {/if}
 {/if}
 
 <div class="post">
@@ -148,7 +149,7 @@ function copyLink() {
   <div class="copy-link" on:click={copyLink}>
     <i class="fas fa-link"></i>
     <span>{clickText}</span>
-</div>
+  </div>
   <h1 class="postHead">{postTitle}</h1>
   <div id="markdowncontent"></div>
 </div>
