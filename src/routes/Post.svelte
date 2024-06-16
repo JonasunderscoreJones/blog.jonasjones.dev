@@ -50,6 +50,10 @@
       if (await !post) {
         loading = false;
         error404 = true;
+        const markdowncontentElement = document.getElementById('markdowncontent');
+        if (markdowncontentElement) {
+            markdowncontentElement.style.display = "none";
+        }
       }
 
       if (params.month?.toString().length === 1) {
@@ -137,22 +141,23 @@ function copyLink() {
 {:else}
   {#if error404}
   <NotFound />
+  {:else}
+  <div class="post">
+    <p class="postHead">by</p>
+    <h3 class="postHead">{postAuthor}</h3>
+    <p class="postHead postDate">{postDate}</p>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="copy-link" on:click={copyLink}>
+      <i class="fas fa-link"></i>
+      <span>{clickText}</span>
+    </div>
+    <h1 class="postHead">{postTitle}</h1>
+  </div>
   {/if}
 {/if}
 
-<div class="post">
-  <p class="postHead">by</p>
-  <h3 class="postHead">{postAuthor}</h3>
-  <p class="postHead postDate">{postDate}</p>
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="copy-link" on:click={copyLink}>
-    <i class="fas fa-link"></i>
-    <span>{clickText}</span>
-  </div>
-  <h1 class="postHead">{postTitle}</h1>
-  <div id="markdowncontent"></div>
-</div>
+<div class="post" id="markdowncontent"></div>
 
 
 <style>
