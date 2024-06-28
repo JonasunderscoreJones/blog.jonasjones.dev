@@ -4,6 +4,7 @@
     import Loading from '../components/Loading.svelte';
     import NotFound from "./Error.svelte";
     import navigate from 'svelte-spa-router';
+    import { parse } from "svelte/compiler";
 
     export let params: {year: string, month: string, day: string, title: string} = {
          year: "",
@@ -11,15 +12,6 @@
          day: "",
          title: ""
      };
-
-    let posts: { id: any; }[] = [];
-    let post: {id: string, date: string, title: string, author: string, description: string} = {
-        id: '',
-        date: '',
-        title: '',
-        author: '',
-        description: ''
-    };
 
     let postTitle = "";
     let postAuthor = "";
@@ -41,20 +33,6 @@
     onMount(async () => {
       redirectUrl()
     try {
-      const response = await fetch('https://cdn.jonasjones.dev/blog/index.json');
-
-      posts = await response.json();
-
-      post = await findPostByDate(posts, params);
-
-      if (await !post) {
-        loading = false;
-        error404 = true;
-        const markdowncontentElement = document.getElementById('markdowncontent');
-        if (markdowncontentElement) {
-            markdowncontentElement.style.display = "none";
-        }
-      }
 
       if (params.month?.toString().length === 1) {
         params.month = "0" + params.month
@@ -67,15 +45,17 @@
 
       if (await content.ok) {
         let markdowncontent = await content.text();
-        markdowncontent = await marked.parse(removePostVars(markdowncontent));
+        const parsedContent = removeAndParsePostVars(markdowncontent);
+        markdowncontent = await marked.parse(parsedContent[0]);
         const markdowncontentElement = document.getElementById('markdowncontent');
         if (markdowncontentElement) {
             markdowncontentElement.innerHTML = await markdowncontent;
         }
         loading = false;
-        postTitle = post.title;
-        postAuthor = post.author;
-        postDate = post.date;
+        postTitle = parsedContent[1];
+        postAuthor = parsedContent[2];
+        postDate = parsedContent[3];
+
       } else {
         loading = false
         error404 = true
@@ -88,9 +68,19 @@
 
     }
 
-    function removePostVars(content: string) {
+    function extractMarkdownValue(content: string, key: string) {
+      const match = content.match(new RegExp(`^\\[${key}\\]: (.*)$`, 'm'));
+      return match ? match[1] : '';
+    }
+
+    function removeAndParsePostVars(content: string) {
+      const title = extractMarkdownValue(content, 'title');
+      const author = extractMarkdownValue(content, 'author');
+      const date = extractMarkdownValue(content, 'date');
+      const description = extractMarkdownValue(content, 'description');
+
       // with regex if the line begins with a markdown variable declaration, remove it
-        return content.replace(/^\[.*?\]: .*$(?:\r?\n)?/gm, '');
+        return [content.replace(/^\[.*?\]: .*$(?:\r?\n)?/gm, ''), title, author, date, description];
     }
   });
 
@@ -102,26 +92,6 @@
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-}
-
-  function findPostByDate(posts: any[], params: { year: any; month: any; day: any; title: any; }) {
-    return posts.find(post => {
-        // Create a Date object from the post's date string
-        const postDate = new Date(post.date);
-
-        // Extract the year, month, and day from the Date object
-        const postYear = postDate.getFullYear();
-        const postMonth = postDate.getMonth() + 1; // Months are zero-based
-        const postDay = postDate.getDate();
-
-        // Compare the extracted year, month, and day with params, and the title
-        return (
-            postYear === parseInt(params.year) &&
-            postMonth === parseInt(params.month) &&
-            postDay === parseInt(params.day) &&
-            post.id === params.title
-        );
-    });
 }
 
 function copyLink() {
