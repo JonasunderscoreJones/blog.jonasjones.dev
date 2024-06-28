@@ -68,6 +68,8 @@
       if (await content.ok) {
         let markdowncontent = await content.text();
         console.log("MarkdownContent: " + markdowncontent);
+        console.log("Posts: ", posts)
+        console.log("Post: ", post)
         markdowncontent = await marked.parse(removePostVars(markdowncontent));
         const markdowncontentElement = document.getElementById('markdowncontent');
         if (markdowncontentElement) {
