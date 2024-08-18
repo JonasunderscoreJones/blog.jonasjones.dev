@@ -3,8 +3,7 @@
     import { marked } from 'marked';
     import Loading from '../components/Loading.svelte';
     import NotFound from "./Error.svelte";
-    import navigate from 'svelte-spa-router';
-    import { parse } from "svelte/compiler";
+    import { recordRequest } from './analytics';
 
     export let params: {year: string, month: string, day: string, title: string} = {
          year: "",
@@ -31,7 +30,11 @@
     }
 
     onMount(async () => {
+      window.addEventListener('popstate', () => {
+        location.reload()
+      });
       redirectUrl()
+      recordRequest();
     try {
 
       if (params.month?.toString().length === 1) {
@@ -87,8 +90,10 @@
   async function redirectUrl() {
     while (true) {
         if (thisHref != location.href) {
-          location.reload()
-          console.log("reloading")
+          if (location.href != "#/") {
+            location.reload()
+            console.log("reloading")
+          }
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
     }

@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { writable } from 'svelte/store';
+  import { recordRequest } from './analytics';
 
   const posts = writable([]);
   const selectedPost = writable({});
@@ -15,6 +16,7 @@
   let now = false;
 
   onMount(async () => {
+    recordRequest();
     try {
       const response = await fetch('https://cdn.jonasjones.dev/blog/index.json');
       const data = await response.json();

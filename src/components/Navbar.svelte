@@ -1,6 +1,9 @@
 <script>
     import { createEventDispatcher } from 'svelte';
 
+    // Call the analytics function on initial page load and after each navigation
+    let previousPath = '';
+
     const dispatch = createEventDispatcher();
 
     let searchTerm = '';

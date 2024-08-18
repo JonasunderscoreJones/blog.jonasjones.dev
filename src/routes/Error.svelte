@@ -1,5 +1,12 @@
 <script lang="ts">
 	export let errorCode: {status: number, message: string} = {status: 404, message: "Not Found"};
+
+	import { onMount } from 'svelte';
+	import { recordRequest } from './analytics';
+
+	onMount(() => {
+		recordRequest();
+	});
 </script>
 
 <div id="error">

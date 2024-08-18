@@ -1,5 +1,11 @@
 <script lang="ts">
 	import PostList from "../components/PostList.svelte";
+	import { onMount } from "svelte";
+	import { recordRequest } from "./analytics";
+
+	onMount(() => {
+		recordRequest();
+	});
 
 	export let searchquery: string = "";
 </script>
