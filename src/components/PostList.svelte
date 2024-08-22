@@ -7,12 +7,37 @@
 
     let posts: {id: String, date: Date, title: String, author: String, description: String}[] = [];
 
-    let filteredPosts: {id: String, date: Date, title: String, author: String, description: String}[] = [];
+    let filteredPosts: {id: String, date: SimpleDate, title: String, author: String, description: String}[] = [];
 
     let error = false;
     let loading = true;
 
     let noPostMessage = '';
+
+    class SimpleDate {
+      public year: number;
+      public month: number;
+      public day: number;
+      public datestring: string;
+
+      constructor(dateString: string) {
+          const [year, month, day] = dateString.split('-').map(Number);
+
+          this.year = year;
+          this.month = month;
+          this.day = day;
+          this.datestring = `${year}/${month}/${day}`;
+      }
+
+      public toUnixTimestamp(): number {
+        // Create a Date object using the given year, month, and day.
+        // Month is zero-based, so subtract 1 from the month.
+        const date = new Date(Date.UTC(this.year, this.month - 1, this.day));
+
+        // Get the Unix timestamp by dividing the time (in milliseconds) by 1000.
+        return Math.floor(date.getTime() / 1000);
+}
+  }
 
     onMount(async () => {
         try {
@@ -26,15 +51,15 @@
                 return;
             } else {
 
-                // for each post, conver the date string to a Date object
+                // for each post, convert the date string to a Date object
                 posts.forEach(post => {
-                    post.date = new Date(post.date);
+                    post.date = new SimpleDate(post.date);
                 });
 
                 filteredPosts = posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()));
 
                 // sort the posts by date
-                filteredPosts.sort((a, b) => b.date - a.date);
+                filteredPosts.sort((a, b) => b.date.toUnixTimestamp() - a.date.toUnixTimestamp());
                 loading = false;
             }
         } catch (error) {
@@ -55,11 +80,11 @@
         <div class="postList">
             {#each filteredPosts as post}
                 <div class="postDiv">
-                    <a href="/#/post/{post.date.getFullYear()}/{post.date.getMonth() + 1}/{post.date.getDate()}/{post.id}">
+                    <a href="/#/post/{post.date.year}/{post.date.month}/{post.date.day}/{post.id}">
                         <h2 class="postTitle">{post.title}</h2>
                         <div class="inline">
                             <p class="postAuthor">{post.author}</p>
-                            <p class="postDate">{post.date.toLocaleDateString()}</p>
+                            <p class="postDate">{post.date.datestring}</p>
                         </div>
                         <p class="postDescription">{post.description}</p>
                     </a>
